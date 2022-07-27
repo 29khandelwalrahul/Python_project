@@ -1,5 +1,3 @@
-
-
 import time
 from bs4 import BeautifulSoup
 import requests
@@ -12,7 +10,7 @@ html_text = requests.get('https://timesofindia.indiatimes.com/').text #website k
 def main_heading():
     soup = BeautifulSoup(html_text, 'lxml')
     article1 = soup.find_all('div', class_= '_1SDbg')
-    # print(f'Heading News: ')
+    # print('Heading News: ')
 
     for heading_news in article1:
         heading = heading_news.find('div', class_='_1Fkp2 _3hhnu   false')
@@ -26,15 +24,52 @@ def main_heading():
 def Entertainment():
     soup = BeautifulSoup(html_text, 'lxml')
     ent_article = soup.find_all('div', class_ = '_1A86C')
-    print("Entertainment News:")
+    # print("Entertainment News:")
     for ent_news in ent_article:
         heading = ent_news.find('div', class_ = 'col_l_8 col_m_12 padR32 _2aV5P')
         for newscap in soup.find_all('figcaption'):
             newspart = newscap.get_text()
-            print(f"News: {newspart}")
+            # print(f"News: {newspart}")
+            # print(" ")
+
+# def citynews():
+#     soup = BeautifulSoup(html_text, 'lxml')
+#     city_article = soup.find_all('div', class_ = "row")
+#     print("city_news: ")
+#     for city_news in city_article:
+#         news_heading1  = city_news.find('div', class_ = 'col_l_3 col_m_3 bdr_right no_bdr_last ')
+#         # news_heading2  = city_news.find('div', class_ = 'col_l_3 col_m_3 bdr_right no_bdr_last ')
+#         # news_heading3  = city_news.find('div', class_ = 'col_l_3 col_m_3 bdr_right no_bdr_last ')
+#         # news_heading4  = city_news.find('div', class_ = 'col_l_3 col_m_3 bdr_right no_bdr_last ')
+
+#         for i in soup.find_all('span'):
+#             newsofcity = i.get_text()
+#             print(f'City News: {newsofcity}')
+#             print(" ")
+
+
+# def explore():
+#     soup = BeautifulSoup(html_text, 'lxml')
+#     expo_article = soup.find_all('div', class_ ='_3HWV3')
+#     print("Explore Section:")
+#     for exp_news in expo_article:
+#         article = exp_news.find('figure', class_="_1Fkp2 _2dA8K   false")
+#         for explore_news in  soup.find_all('figcaption'):
+#             explore_news1 = explore_news.get_text().strip()
+#             print(f'News: {explore_news1}')
+#             print(" ")
+
+
+def covid19():
+    soup = BeautifulSoup(html_text, 'lxml')
+    covid_articles = soup.find_all('div', class_ = '_2ofaX')
+    print('Codiv Section:')
+    for c19_news in covid_articles:
+        news1 = c19_news.find('col_l_8 col_m_12 padR32  _19nxj')
+        for covid19 in soup.find_all('span'):
+            covid_news = covid19.get_text()
+            print(f'Covid Updates: {covid_news}')
             print(" ")
-
-
 
 
 def find_articles():
@@ -67,6 +102,10 @@ if __name__ == '__main__':
         find_articles()
         main_heading()
         Entertainment()
+        covid19()
+        # citynews()
+        # explore()
+
         # time_wait = 10
         # print(f'Waiting {time_wait} Minutes...')
         # time.sleep(time_wait*60)
