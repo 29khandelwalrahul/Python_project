@@ -1,111 +1,45 @@
-import time
-from bs4 import BeautifulSoup
+from ast import keyword
+from random import betavariate
+from re import X
+from turtle import title
 import requests
+from bs4 import BeautifulSoup
 
-# print('Enter the news you want to search about')
-# search_news = input('>')
-# print(f'Filtering out {search_news}')
-html_text = requests.get('https://timesofindia.indiatimes.com/').text #website ka URL daalna h..
+headers = {'User-agent': 'Chrome/103.0.5060.134'}
 
-def main_heading():
-    soup = BeautifulSoup(html_text, 'lxml')
-    article1 = soup.find_all('div', class_= '_1SDbg')
-    # print('Heading News: ')
+request = requests.get('https://timesofindia.indiatimes.com/', headers=headers)
+html = request.content
 
-    for heading_news in article1:
-        heading = heading_news.find('div', class_='_1Fkp2 _3hhnu   false')
-        for headingcap in soup.find_all('figcaption'):
-            headingpart = headingcap.get_text()
-            # print(f'News: {headingpart}')
-            # print(" ")
+soup = BeautifulSoup(html, 'html.parser')
 
+# print(soup.prettify)
 
+def toi_news_scrapper(keyword):
+    news_list = []
 
-def Entertainment():
-    soup = BeautifulSoup(html_text, 'lxml')
-    ent_article = soup.find_all('div', class_ = '_1A86C')
-    # print("Entertainment News:")
-    for ent_news in ent_article:
-        heading = ent_news.find('div', class_ = 'col_l_8 col_m_12 padR32 _2aV5P')
-        for newscap in soup.find_all('figcaption'):
-            newspart = newscap.get_text()
-            # print(f"News: {newspart}")
-            # print(" ")
+    for h in soup.find_all('a',  class_="linktype1" ):
+        for i in soup.find('figcaption'):
+            news_title = h.contents[0].text
 
-# def citynews():
-#     soup = BeautifulSoup(html_text, 'lxml')
-#     city_article = soup.find_all('div', class_ = "row")
-#     print("city_news: ")
-#     for city_news in city_article:
-#         news_heading1  = city_news.find('div', class_ = 'col_l_3 col_m_3 bdr_right no_bdr_last ')
-#         # news_heading2  = city_news.find('div', class_ = 'col_l_3 col_m_3 bdr_right no_bdr_last ')
-#         # news_heading3  = city_news.find('div', class_ = 'col_l_3 col_m_3 bdr_right no_bdr_last ')
-#         # news_heading4  = city_news.find('div', class_ = 'col_l_3 col_m_3 bdr_right no_bdr_last ')
+        if news_title not in news_list:
+                if 'Times of India' not in news_title:
+                    news_list.append(news_title)
 
-#         for i in soup.find_all('span'):
-#             newsofcity = i.get_text()
-#             print(f'City News: {newsofcity}')
-#             print(" ")
+    no_of_news = 0
+    keyword_list = []
+    # Goes through the list and searches for the keyword
+    for i, title in enumerate(news_list):
+        text = ''
+        if keyword in title:
+            text = ' <------------ KEYWORD'
+            no_of_news += 1
+            keyword_list.append(title)
 
+        print(i + 1, ':', title, text)
 
-# def explore():
-#     soup = BeautifulSoup(html_text, 'lxml')
-#     expo_article = soup.find_all('div', class_ ='_3HWV3')
-#     print("Explore Section:")
-#     for exp_news in expo_article:
-#         article = exp_news.find('figure', class_="_1Fkp2 _2dA8K   false")
-#         for explore_news in  soup.find_all('figcaption'):
-#             explore_news1 = explore_news.get_text().strip()
-#             print(f'News: {explore_news1}')
-#             print(" ")
-
-
-def covid19():
-    soup = BeautifulSoup(html_text, 'lxml')
-    covid_articles = soup.find_all('div', class_ = '_2ofaX')
-    print('Codiv Section:')
-    for c19_news in covid_articles:
-        news1 = c19_news.find('col_l_8 col_m_12 padR32  _19nxj')
-        for covid19 in soup.find_all('span'):
-            covid_news = covid19.get_text()
-            print(f'Covid Updates: {covid_news}')
-            print(" ")
-
-
-def find_articles():
-    soup = BeautifulSoup(html_text, 'lxml')
-    article1 = soup.find_all('div', class_= '_1SDbg')
-    # print(article1)
-    for bk_news in article1:
-        # published_date = job.find('span', class_ ='sim-posted').span.text
-        # if 'few' in published_date:
-
-        first_section = bk_news.find('div', class_="_2r4Y_ _3abpr grid_wrapper")
-        # for figcap in soup.find_all('fidcaption'):
-            # if search_news in first_section:
-            # print(figcap.get_text())
-    
-        # news_name = bk_news.find('div', class_ = 'col_l_6')
-        # skills = job.find('span', class_ = 'srp-skills').text.replace(' ','')
-        # more_info = job.header.h2.a['href']
-       
-            
-        # print(f"Company Nmae: {news_name.strip()}\n")
-        # print(f"Requirede Skills: {skills.strip()}\n")
-        # print(f'More Infor: {more_info}')
-        # print('')
-
-    
-
-if __name__ == '__main__':
-    if True:
-        find_articles()
-        main_heading()
-        Entertainment()
-        covid19()
-        # citynews()
-        # explore()
-
-        # time_wait = 10
-        # print(f'Waiting {time_wait} Minutes...')
-        # time.sleep(time_wait*60)
+    # Prints the Titles of the articles that contain the keywords
+    print(f'\n--------- Total mentions of "{keyword}" = {no_of_news} ---------')
+    for i, title in enumerate(keyword_list):
+        print(i + 1, ':', title)
+x = input("Enter what you want to search about: ")
+toi_news_scrapper(x)
