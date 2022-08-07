@@ -49,7 +49,7 @@ def toi_news_scrapper(keyword):
         for i, title in enumerate(keyword_list):
             info = [i + 1, title]
             thewriter.writerow(info)
-
-toi_news_scrapper('Covid')
-
+for i in range(1):
+    x = input("Enter The news you want to search for: ")
+toi_news_scrapper(x)
 
