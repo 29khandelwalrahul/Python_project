@@ -7,6 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 from csv import writer
 import re
+import pandas as pd
 
 
 headers = {'User-agent': 'Chrome/103.0.5060.134'}
@@ -40,6 +41,7 @@ def toi_news_scrapper(keyword):
         # Goes through the list and searches for the keyword
         for i, title in enumerate(news_list):
             text = ''
+            
             if keyword in title:
                 text = ' <---------- KEYWORD'
                 no_of_news += 1
@@ -66,7 +68,14 @@ def toi_news_scrapper(keyword):
         # display the actual urls
         # print(link.get('href')) 
                 info = [title, link.get('href')]
-                thewriter.writerow(info)                    
-                
+                thewriter.writerow(info)
+        filename = 'news_scraping.csv'
+        r = pd.read_csv(filename,nrows=5)
+        print(r)
+
+            
+
+
+
 
 toi_news_scrapper(x)
