@@ -28,7 +28,7 @@ class web_scrapper:
 
         # searchbar
         e = Entry(Boardframe, width=76, relief=FLAT, borderwidth=8, font=1)
-        e.insert(0, "Search here..")
+        e.insert(0,"")
         e.grid(row=0, column=1)
 
         # popular searches
