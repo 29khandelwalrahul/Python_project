@@ -65,7 +65,7 @@ class web_scrapper:
                         thewriter.writerow(info)
 
                     
-                with open('Searched_news.csv', 'w',encoding='utf8', newline='') as f:
+                with open('Searched_news.csv', 'a',encoding='utf8', newline='') as f:
                     thewriter = writer(f)
                     header1 = ['Keyword', 'Number of articles found']
                     thewriter.writerow(header1)
