@@ -166,7 +166,7 @@ class web_scrapper:
                 n = Label(section, image=self.photobg)
                 n.place(x=0, y=0)
 
-                url_n = "https://timesofindia.indiatimes.com/home/headlines"
+                url_n = "https://timesofindia.indiatimes.com/?from=mdr"
                 content_request_n = requests.get(url_n)
                 html_content_n = content_request_n.content
                 soup_n = BeautifulSoup(html_content_n, 'html.parser')
@@ -180,9 +180,9 @@ class web_scrapper:
 
                 all_n = list()
                 hyperlink = HyperlinkManager(text_n)
-                figure_n = soup_n.find_all('span',class_="w_tle")
+                figure_n = soup_n.find_all('figure')
                 for ha in (figure_n):
-                    all_n.append(ha.a.get_text())
+                    all_n.append(ha.figcaption.get_text())
                     all_n.append(ha.a.get('href'))
                 for p in range(0, len(all_n), 2):
                     text_n.insert(INSERT, all_n[p])
@@ -207,7 +207,7 @@ class web_scrapper:
                 s = Label(section, image=self.photobg)
                 s.place(x=0, y=0)
 
-                url_et = "https://timesofindia.indiatimes.com/entertainment"
+                url_et = "https://timesofindia.indiatimes.com/etimes/web-stories"
                 content_request_et = requests.get(url_et)
                 html_content_et = content_request_et.content
                 soup_et = BeautifulSoup(html_content_et, 'html.parser')
@@ -221,7 +221,7 @@ class web_scrapper:
 
                 all_et = list()
                 hyperlink = HyperlinkManager(text_et)
-                figure_et = soup_et.find_all('li',class_="small_video_lft clearfix")
+                figure_et = soup_et.find_all('ul',class_="vslisting")
                 for ha in (figure_et):
                     all_et.append(ha.a.get_text())
                     all_et.append(ha.a.get('href'))
@@ -248,7 +248,7 @@ class web_scrapper:
                 e = Label(section, image=self.photobg)
                 e.place(x=0, y=0)
 
-                url_e = "https://timesofindia.indiatimes.com/education"
+                url_e = "https://timesofindia.indiatimes.com/education/exams"
                 content_request_e = requests.get(url_e)
                 html_content_e = content_request_e.content
                 soup_e = BeautifulSoup(html_content_e, 'html.parser')
@@ -262,10 +262,11 @@ class web_scrapper:
 
                 all_e = list()
                 hyperlink = HyperlinkManager(text_e)
-                figure_e = soup_e.find_all('span',class_="w_tle")
+                figure_e = soup_e.find_all('figure')
                 for ha in (figure_e):
-                    all_e.append(ha.a.get_text())
-                    all_e.append(ha.a.get('href'))
+                    if (ha.figcaption != None):
+                        all_e.append(ha.figcaption.get_text())
+                        all_e.append(ha.a.get('href'))
                 for p in range(0, len(all_e), 2):
                     text_e.insert(INSERT, all_e[p])
                     text_e.insert(INSERT, "\n")
