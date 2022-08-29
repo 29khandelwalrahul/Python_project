@@ -1,3 +1,4 @@
+import imp
 from tkinter import *
 from PIL import Image,ImageTk
 from bs4 import BeautifulSoup
@@ -9,6 +10,7 @@ import pandas as pd
 import re
 from csv import writer
 import webbrowser
+import os
 
 # import numpy as np
 
@@ -65,11 +67,15 @@ class web_scrapper:
                         thewriter.writerow(info)
 
                     
-                with open('Searched_news.csv', 'w',encoding='utf8', newline='') as f:
+                with open('Searched_news.csv', 'a',encoding='utf8', newline='') as f:
                     thewriter = writer(f)
-                    header1 = ['Keyword', 'Number of articles found']
-                    thewriter.writerow(header1)
-                    news_dataset.append([keyword, no_of_news])
+                    header1 = ['Keyword', 'Number of articles found', 'No of times searched']
+                    file_is_empty = os.stat('Searched_news.csv').st_size==0
+                    if file_is_empty:
+                        thewriter.writerow(header1)
+                    news_dataset.append(','.join(map(str,[keyword])))
+                    int(no_of_news)
+                    news_dataset.append(no_of_news)
                     thewriter.writerow(news_dataset)
 
                     # filename = 'news_scraping.csv'
