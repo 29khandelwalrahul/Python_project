@@ -1,12 +1,15 @@
-from tkinter import *
-from PIL import Image,ImageTk
-from bs4 import BeautifulSoup
-from tkHyperlinkManager import HyperlinkManager
-from functools import partial
-import requests
 import webbrowser
-# import pandas as pd
-# import numpy as np
+from functools import partial
+from tkinter import *
+import csv
+import requests
+from bs4 import BeautifulSoup
+from PIL import Image, ImageTk
+
+from tkHyperlinkManager import HyperlinkManager
+
+import pandas as pd
+import numpy as np
 
 url = "https://timesofindia.indiatimes.com/"
 
@@ -28,6 +31,28 @@ class web_scrapper:
         e=Entry(Boardframe,width=76,relief=FLAT,borderwidth=8, font=1)
         e.insert(0,"Search here..")
         e.grid(row=0,column=1)
+        #extract value from the search bar
+        def getValue():
+            pname = e.get()
+            data = {
+               
+                'Counter' : ['1'],
+                 'Keyword' : [pname]
+            }
+            df = pd.DataFrame(data)  
+            df.to_csv('web_scrapper\data.csv', mode='a', index=False, header=False)
+            print(pname)
+           
+        #recent 5 searches
+        def recent_search_csv():
+            filename = 'web_scrapper\data.csv'
+            r = pd.read_csv(filename,nrows=5)
+            print(r)
+            
+           
+
+
+    
 
         # popular searches
         def popular_searches(name):
@@ -122,9 +147,11 @@ class web_scrapper:
         p6 = Button(Boardframe, text = 'Education', bg='#116562',cursor='hand2',relief=FLAT, foreground='black', width=15, height=2,activebackground='orange', command=popular_searches('e')).place(x=690, y= 50)
 
         # submit button
-        btn = Button(Boardframe, text = "Search", width=17, height=3 , foreground="black",relief=RAISED,cursor='hand2',background="yellow",command=search).place(x=372, y= 120)
+        btn = Button(Boardframe, text = "Search", width=17, height=3 , foreground="black",relief=RAISED,cursor='hand2',background="yellow",command=lambda: [getValue(), search()]).place(x=372, y= 120)
 
+       
         # recent search
+       
         recent_serach = []
         def recent_searches(list):
             rs = Toplevel()
@@ -137,7 +164,7 @@ class web_scrapper:
             for j in range(len(list)):
                 l.insert(j,list[j])
             
-            s=Button(rs, text = 'Search',width=17, height=3 , foreground="black",relief=RAISED,background="gold",command=search).place(x=70,y=400)
+            s=Button(rs, text = 'Search',width=17, height=3 , foreground="black",relief=RAISED,background="gold",command=lambda:[recent_search_csv(),search()]).place(x=70,y=400)
         
         rsbtn = Button(window, text = "Recent Searches",cursor='hand2', width=17, height=3 , foreground="black",relief=RAISED,background="SlateGray4", font = 1,command=lambda : recent_searches(recent_serach)).place(x=480, y= 300)
         
@@ -161,7 +188,7 @@ class web_scrapper:
 
 window = Tk()
 
-img=Image.open('images/web-cr.jpg')
+img=Image.open('web_scrapper\images\web-cr.jpg')
 img=img.resize((1200,675),Image.Resampling.LANCZOS)
 photobg=ImageTk.PhotoImage(img)
 img_l=Label(window,image=photobg).place(x=0,y=0)
